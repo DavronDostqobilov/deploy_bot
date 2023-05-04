@@ -1,25 +1,23 @@
 from flask import Flask, request
 from telegram import Update
 from telegram.ext import Dispatcher, Updater, MessageHandler, CommandHandler, Filters
-import os
 import telegram
 from bot import start, echo
-TOKEN = "6149369057:AAFwx8G3CHGlxC2UyXnUV0FkLTKP6F5IBwk"
-
-bot = telegram.Bot(TOKEN)
 
 app = Flask(__name__)
+TOKEN = "6149369057:AAFwx8G3CHGlxC2UyXnUV0FkLTKP6F5IBwk"
+bot = telegram.Bot(TOKEN)
 
-@app.route("/api")
+@app.route("/")
 def main():
     return "DEPLYMENT"
 
 @app.route("/webhook", methods = ["POST", "GET"])
 def home():
     if request.method == "POST":
+        data = request.get_json(force=True)
         dp = Dispatcher(bot, None, workers=0)
 
-        data = request.get_json(force=True)
         update = Update.de_json(data, bot)
 
         dp.add_handler(CommandHandler("start", start))
